@@ -1,0 +1,99 @@
+package com.artsgard.socioregister.service;
+
+import com.artsgard.socioregister.service.MapperService;
+import com.artsgard.socioregister.DTO.AddressDTO;
+import com.artsgard.socioregister.DTO.SocioDTO;
+import com.artsgard.socioregister.model.AddressModel;
+import com.artsgard.socioregister.model.CountryModel;
+import com.artsgard.socioregister.model.LanguageModel;
+import com.artsgard.socioregister.model.SocioModel;
+import com.artsgard.socioregister.repository.SocioRepository;
+import com.artsgard.socioregister.serviceimpl.MapperServiceImpl;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import static org.hamcrest.CoreMatchers.isA;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.mockito.BDDMockito.given;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+/**
+ *
+ * @author WillemDragstra
+ */
+@ExtendWith(MockitoExtension.class)
+public class MapperServiceTest {
+
+    //private final MapperService mapperService = new MapperServiceImpl();
+    private SocioDTO socioDTOMock;
+    private SocioModel socioModelMock;
+    private AddressDTO addressDTOMock;
+    private AddressModel addressModelMock;
+    
+    @Mock
+    private SocioRepository socioRepository;
+
+   
+    MapperService mapperService = new MapperServiceImpl();
+
+    @BeforeEach
+    public void setup() {
+        LanguageModel lang1 = new LanguageModel(1L, "Netherlands", "NL");
+        LanguageModel lang2 = new LanguageModel(1L, "Spain", "ES");
+        List<LanguageModel> langs = new ArrayList();
+        langs.add(lang1);
+        langs.add(lang2);
+        
+        socioDTOMock = new SocioDTO(1L, "js", "secret", "Johann Sebastian", "Bach", "jsbach@gmail.com", true, langs, null);
+        socioDTOMock.setRegisterDate(new Timestamp(1479250540110L));
+        socioModelMock = new SocioModel(1L, "js", "secret", "Johann Sebastian", "Bach", "jsbach@gmail.com", true, langs, null);
+        socioModelMock.setRegisterDate(new Timestamp(1479250540110L));
+        addressDTOMock = new AddressDTO(1L, "Vermeerstraat 23", "Eindhoven", "3454JK", "Brabant", new CountryModel(1L, "Netherlands", "NL"), "ok place", AddressModel.AddressType.HOME, 1L);
+        addressModelMock = new AddressModel(1L, "Vermeerstraat 23", "Eindhoven", "3454JK", "Brabant", new CountryModel(1L, "Netherlands", "NL"), "ok place", AddressModel.AddressType.HOME, socioModelMock);
+    }
+
+    @Test
+    public void mapSocioDTOToSocioModelTest() {
+        assertNotNull(socioModelMock);
+        SocioDTO dto = mapperService.mapSocioModelToSocioDTO(socioModelMock);
+        assertThat(dto, isA(SocioDTO.class));
+        assertEquals(dto.getUsername(), socioDTOMock.getUsername());
+    }
+    
+    @Test
+    public void mapSocioModelToSocioDTOTest() {
+        assertNotNull(socioDTOMock);
+        SocioModel model = new SocioModel();
+        model = mapperService.mapSocioDTOToSocioModel(socioDTOMock);
+        assertThat(model, isA(SocioModel.class));
+        assertEquals(model.getEmail(), socioModelMock.getEmail());
+    }
+    
+    //@Test
+    public void mapAddressDTOToAddressModelTest() {
+        assertNotNull(addressDTOMock);
+        assertNotNull(socioRepository);
+        
+        given(socioRepository.getOne(addressDTOMock.getSocioId())).willReturn(socioModelMock);
+        
+        AddressModel model = mapperService.mapAddressDTOToAddressModel(addressDTOMock);
+        model.setSocio(socioModelMock);
+        assertThat(model, isA(AddressModel.class));
+        assertEquals(model.getPostalcode(), addressDTOMock.getPostalcode());
+    }
+    
+    @Test
+    public void mapAddressModelToAddressDTOTest() {
+        assertNotNull(addressModelMock);
+        AddressDTO dto = mapperService.mapAddressModelToAddressDTO(addressModelMock);
+        dto.setCountry(new CountryModel(1L, "Netherlands", "NL"));
+        assertThat(dto, isA(AddressDTO.class));
+        assertEquals(dto.getPostalcode(), addressModelMock.getPostalcode());
+    }
+}
