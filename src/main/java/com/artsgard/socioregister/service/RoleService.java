@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface RoleService  {
-   List<RoleModel> getAllRoles(); 
-   List<RoleModel> findRolesBySocioId(Long id); 
-   List<RoleModel> findRolesBySocioUsername(String username); 
+   List<RoleModel> getAllRoles() throws ResourceNotFoundException;
+   List<RoleModel> findRolesBySocioId(Long id) throws ResourceNotFoundException; 
+   List<RoleModel> findRolesBySocioUsername(String username) throws ResourceNotFoundException;
    RoleModel findByName(String name) throws ResourceNotFoundException;
 }

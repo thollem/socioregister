@@ -20,13 +20,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class AssociatedSocioServiceImpl implements AssociatedSocioService {
 
-    org.slf4j.Logger logger = LoggerFactory.getLogger(AssociatedSocioServiceImpl.class);
+    org.slf4j.Logger logger;
 
     @Autowired
     private SocioRepository socioRepò;
     
     @Autowired
     private AssociatedSocioRepository associatedSocioRepo;
+    
+     public AssociatedSocioServiceImpl() { 
+        logger = LoggerFactory.getLogger(SocioServiceImpl.class);
+    }
+
 
     @Override
     public void registerAssociatedSocio(Long socioId, Long associatedSocioId) {

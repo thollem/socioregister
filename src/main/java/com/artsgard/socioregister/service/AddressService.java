@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface AddressService  {
-    List<AddressDTO> findAllAddresses(); 
+    List<AddressDTO> findAllAddresses() throws ResourceNotFoundException;
     AddressDTO findOneAddressById(Long id) throws ResourceNotFoundException;
-    List<AddressDTO> findAddressesBySocioId(Long id);
-    AddressDTO saveAddress(AddressDTO address) throws ResourceNotFoundException;
-    AddressDTO updateAddress(AddressDTO address);
+    List<AddressDTO> findAddressesBySocioId(Long id) throws ResourceNotFoundException;
+    AddressDTO saveAddress(AddressDTO address);
+    AddressDTO updateAddress(AddressDTO address) throws ResourceNotFoundException;
     void deleteAddressById(Long id) throws ResourceNotFoundException;
-    boolean hasAddress(Long id) throws ResourceNotFoundException;
+    boolean hasAddress(Long id);
 }

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.artsgard.socioregister.DTO.SocioDTO;
+import com.artsgard.socioregister.exception.ResourceNotFoundException;
 import com.artsgard.socioregister.model.SocioModel;
 import com.artsgard.socioregister.repository.SocioRepository;
 import com.artsgard.socioregister.service.SocioService;
@@ -22,18 +23,16 @@ import java.util.Optional;
 @Service
 public class SocioServiceImpl implements SocioService {
 
-    org.slf4j.Logger logger = LoggerFactory.getLogger(SocioServiceImpl.class);
+    org.slf4j.Logger logger;
 
     @Autowired
     private MapperService mapperService;
 
     @Autowired
-    private SocioRepository socioRepò;
+    private SocioRepository socioRepo;
 
-    /**
-     *
-     */
     public SocioServiceImpl() {
+        logger = LoggerFactory.getLogger(SocioServiceImpl.class);
     }
 
     /**
@@ -41,29 +40,34 @@ public class SocioServiceImpl implements SocioService {
      * @return list of all socios
      */
     @Override
-    public List<SocioDTO> findAllSocios() {
-        List<SocioModel> socios = socioRepò.findAll();
-        List<SocioDTO> socioList = new ArrayList();
+    public List<SocioDTO> findAllSocios() throws ResourceNotFoundException {
+        List<SocioModel> socios = socioRepo.findAll();
 
-        for (SocioModel sco : socios) {
-            SocioDTO scDTO = mapperService.mapSocioModelToSocioDTO(sco);
-            socioList.add(scDTO);
+        if (socios.isEmpty()) {
+            throw new ResourceNotFoundException("no Socios found!");
+        } else {
+            List<SocioDTO> socioList = new ArrayList();
+
+            for (SocioModel sco : socios) {
+                SocioDTO scDTO = mapperService.mapSocioModelToSocioDTO(sco);
+                socioList.add(scDTO);
+            }
+            return socioList;
         }
-        return socioList;
     }
 
     @Override
-    public List<SocioDTO> getSociosBySortedPage(int rows, int offset, FilterDTO filter) {
+    public List<SocioDTO> getSociosBySortedPage(int rows, int offset, FilterDTO filter) throws ResourceNotFoundException {
         List<SocioModel> socios = null;
 
         if (filter.getCountry() != null) {
-            socios = socioRepò.getSociosBySortedPageByCountry(rows, offset, filter.getCountry());
+            socios = socioRepo.getSociosBySortedPageByCountry(rows, offset, filter.getCountry());
         } else if (filter.getLanguage() != null) {
-            socios = socioRepò.getSociosBySortedPageByLanguage(rows, offset, filter.getLanguage());
+            socios = socioRepo.getSociosBySortedPageByLanguage(rows, offset, filter.getLanguage());
         } else {
-            socios = socioRepò.getSociosBySortedPage(rows, offset);
+            socios = socioRepo.getSociosBySortedPage(rows, offset);
         }
-        
+
         List<SocioDTO> socioList = new ArrayList();
 
         socios.stream().map(sco -> mapperService.mapSocioModelToSocioDTO(sco)).forEachOrdered(scDTO -> {
@@ -78,12 +82,12 @@ public class SocioServiceImpl implements SocioService {
      * @return single socio by id
      */
     @Override
-    public SocioDTO findSocioById(Long id) {
-        Optional<SocioModel> opSocio = socioRepò.findById(id);
+    public SocioDTO findSocioById(Long id) throws ResourceNotFoundException {
+        Optional<SocioModel> opSocio = socioRepo.findById(id);
         if (opSocio.isPresent()) {
             return mapperService.mapSocioModelToSocioDTO(opSocio.get());
         } else {
-            return null;
+             throw new ResourceNotFoundException("no Addresses found!");
         }
     }
 
@@ -93,12 +97,12 @@ public class SocioServiceImpl implements SocioService {
      * @return single socio by username
      */
     @Override
-    public SocioDTO findSocioByUsername(String username) {
-        Optional<SocioModel> opSocio = socioRepò.findByUsername(username);
+    public SocioDTO findSocioByUsername(String username) throws ResourceNotFoundException {
+        Optional<SocioModel> opSocio = socioRepo.findByUsername(username);
         if (opSocio.isPresent()) {
             return mapperService.mapSocioModelToSocioDTO(opSocio.get());
         } else {
-            return null;
+             throw new ResourceNotFoundException("no Addresses found!");
         }
     }
 
@@ -108,12 +112,12 @@ public class SocioServiceImpl implements SocioService {
      * @return single socio as SocioMopdel
      */
     @Override
-    public SocioModel findSocioModelByUsername(String username) {
-        Optional<SocioModel> opSocio = socioRepò.findByUsername(username);
+    public SocioModel findSocioModelByUsername(String username) throws ResourceNotFoundException {
+        Optional<SocioModel> opSocio = socioRepo.findByUsername(username);
         if (opSocio.isPresent()) {
             return opSocio.get();
         } else {
-            return null;
+             throw new ResourceNotFoundException("no Addresses found!");
         }
     }
 
@@ -127,7 +131,7 @@ public class SocioServiceImpl implements SocioService {
         SocioModel socio = mapperService.mapSocioDTOToSocioModel(socioDTO);
         socio.setRegisterDate(new Timestamp(System.currentTimeMillis()));
         socio.setLastCheckinDate(new Timestamp(System.currentTimeMillis()));
-        return mapperService.mapSocioModelToSocioDTO(socioRepò.save(socio));
+        return mapperService.mapSocioModelToSocioDTO(socioRepo.save(socio));
     }
 
     /**
@@ -137,18 +141,20 @@ public class SocioServiceImpl implements SocioService {
      * @return update single socio by id
      */
     @Override
-    public SocioDTO updateSocio(final SocioDTO socioDTO) {
+    public SocioDTO updateSocio(final SocioDTO socioDTO) throws ResourceNotFoundException {
 
-        SocioDTO repoSocio = null;
-        for (SocioModel value : socioRepò.findAll()) {
+        Optional<SocioModel> optSocio = socioRepo.findById(socioDTO.getId());
+                /*
+        for (SocioModel value : socioRepo.findAll()) {
             if (Objects.equals(value.getId(), socioDTO.getId())) {
                 repoSocio = mapperService.mapSocioModelToSocioDTO(value);
             }
         }
+        */
 
         SocioDTO updatedDTO;
-        if (repoSocio != null) {
-
+        if (optSocio.isPresent()) {
+            SocioModel repoSocio = optSocio.get();
             if (socioDTO.getUsername() == null) {
                 socioDTO.setUsername(repoSocio.getUsername());
             }
@@ -171,14 +177,14 @@ public class SocioServiceImpl implements SocioService {
             socioDTO.setRegisterDate(repoSocio.getRegisterDate());
             socioDTO.setLastCheckinDate(repoSocio.getLastCheckinDate());
             socioDTO.setSocioLanguages(repoSocio.getSocioLanguages());
-            socioDTO.setSocioAddresses(repoSocio.getSocioAddresses());
+       //     socioDTO.setSocioAddresses(repoSocio.getSocioAddresses());
             socioDTO.setId(socioDTO.getId());
 
         } else {
-            return null;
+             throw new ResourceNotFoundException("no Addresses found!");
         }
         SocioModel socio = mapperService.mapSocioDTOToSocioModel(socioDTO);
-        return mapperService.mapSocioModelToSocioDTO(socioRepò.save(socio));
+        return mapperService.mapSocioModelToSocioDTO(socioRepo.save(socio));
     }
 
     /**
@@ -188,8 +194,14 @@ public class SocioServiceImpl implements SocioService {
      * @param id
      */
     @Override
-    public void deleteSocioById(Long id) {
-        socioRepò.deleteById(id);
+    public void deleteSocioById(Long id) throws ResourceNotFoundException {
+        Optional<SocioModel> opSocio = socioRepo.findById(id);
+        
+        if(opSocio.isPresent()) {
+            socioRepo.deleteById(id);
+        } else {
+            throw new ResourceNotFoundException("no Addresses found!");
+        }  
     }
 
     /**
@@ -199,7 +211,7 @@ public class SocioServiceImpl implements SocioService {
      */
     @Override
     public boolean hasSocioById(Long id) {
-        return socioRepò.existsById(id);
+        return socioRepo.existsById(id);
     }
 
     /**
@@ -208,8 +220,8 @@ public class SocioServiceImpl implements SocioService {
      * @return boolean is socio active
      */
     @Override
-    public boolean isSocioActiveById(Long id) {
-        Optional<SocioModel> opSocio = socioRepò.findById(id);
+    public boolean isSocioActiveById(Long id) throws ResourceNotFoundException {
+        Optional<SocioModel> opSocio = socioRepo.findById(id);
         if (opSocio.isPresent()) {
             return true;
         } else {

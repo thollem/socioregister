@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Service
 public class LanguageServiceImpl implements LanguageService {
+    
     org.slf4j.Logger logger = LoggerFactory.getLogger(CountryServiceImpl.class);
     
     @Autowired

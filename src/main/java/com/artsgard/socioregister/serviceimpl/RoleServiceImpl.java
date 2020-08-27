@@ -22,7 +22,16 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<RoleModel> getAllRoles() {
-        return roleRepo.findAll();
+        List<RoleModel> list = roleRepo.findAll();
+        if(list.isEmpty()) {
+        throw new ResourceNotFoundException("no Roles found!");
+        } else {
+             return list;
+        }
+    }
+    
+    public RoleServiceImpl() { 
+        logger = LoggerFactory.getLogger(SocioServiceImpl.class);
     }
     
     @Override
@@ -42,7 +51,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<RoleModel> findRolesBySocioUsername(String username) {
+    public List<RoleModel> findRolesBySocioUsername(String username) throws ResourceNotFoundException {
         return roleRepo.findRolesBySocioUsername(username);
     }
 }

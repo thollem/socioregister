@@ -1,5 +1,6 @@
  package com.artsgard.socioregister.service;
 
+import com.artsgard.socioregister.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface AssociatedSocioService  {  
-    void registerAssociatedSocio(Long socioId, Long associatedSocioId);
-    void updateStateAssociatedSocio(Long socioId, Long associatedSocioId, boolean state);
-    void deleteStateAssociatedSocio(Long socioId, Long associatedSocioId);
+    void registerAssociatedSocio(Long socioId, Long associatedSocioId) throws ResourceNotFoundException;
+    void updateStateAssociatedSocio(Long socioId, Long associatedSocioId, boolean state) throws ResourceNotFoundException;
+    void deleteStateAssociatedSocio(Long socioId, Long associatedSocioId) throws ResourceNotFoundException;
 }

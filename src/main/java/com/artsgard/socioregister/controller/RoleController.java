@@ -38,11 +38,6 @@ public class RoleController {
 
     @GetMapping(path = "/username/{username}", produces = "application/json")
     public ResponseEntity <List<RoleModel>> findRolesBySocioUsername(@PathVariable String username) {
-        List<RoleModel> roles = roleService.findRolesBySocioUsername(username);
-        if (roles != null) {
-            return new ResponseEntity<>(roles, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(roleService.findRolesBySocioUsername(username), HttpStatus.OK);
     }
 }

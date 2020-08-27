@@ -58,12 +58,7 @@ public class AddressController {
     @PutMapping(produces = "application/json", consumes = "application/json")
     public ResponseEntity<?> updateAddress(@Valid @RequestBody AddressDTO address) 
                                                             throws Exception {
-        AddressDTO addr = addressService.updateAddress(address);
-         if (addr != null) {
-            return new ResponseEntity<>(addr, HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(addressService.updateAddress(address), HttpStatus.CREATED);
     }
    
     @DeleteMapping(path = "/{id}")
