@@ -33,14 +33,14 @@ Testing is still "work in progress"
 
 Specific Info SocioRegister =====================================
 
-The previous three applications (starter, mock, jpa) form the prelude for the final SocioRegister application to be deployed at a Docker Container. Maybe it is a good idea to start firts with a small recap?
+The previous three applications (starter, mock, jpa) form the prelude for the final SocioRegister application to be deployed at a Docker Container. Maybe it is a good idea to start first with a small recap?
 
-	1) SocioRegister-starter show how to begin a Micro-Service setup beginning with an empty shell of a Springboot (WEB/REST) application. Stressing the importance of the Maven pom (or Gradle file) and the Springboot Starter Dependencies.
+	1) SocioRegister-starter shows how to begin a Micro-Service setup beginning with an empty shell of a Springboot (WEB/REST) application. Stressing the importance of the Maven pom (or Gradle file) and the Springboot Starter Dependencies.
 	
-	2) SocioRegister-mock is already more personalized, adding several Socio-layers to the mix: first principal layers, the controller, service (interface and implemention), and the Repository; second, from DTO via Modelmapper convertion to Model (Entity) and visa versa; third, the user of the ResponseEntity class at the controllers.
+	2) SocioRegister-mock is already more personalized, adding several Socio-layers to the mix: first the principal layers, the controller, service (interface and implemention), and the Repository; second, from DTO via Modelmapper convertion to Model (Entity) and visa versa; third, the use of the ResponseEntity class at the controllers' returns.
 	
-	3) SocioRegister-jpa adds the Spring-data layer in the form of JPA-persistence (Postgres DB). It further goes into the implementation of validation messages. And finaly one finds a implementaion of a Spring Global Exception Handeling (amung others the ResourceNotFoundException).
+	3) SocioRegister-jpa adds the Spring-data layer in the form of JPA-persistence (Postgres DB). It further goes into the implementation of validation messages. And finally one finds an implementaion of a Spring Global Exception Handeling (amung others the ResourceNotFoundException) based on the @RestControllerAdvice and the ResponseEntityExceptionHandler.
 
-At this part I would like to elaborate testing and DB initialization
+Like I said before at this part I would like to elaborate on testing and DB initialization
 
 Testing has a mayor importance at Micro-Service and Springboot applications, so lets dive into it!
