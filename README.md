@@ -84,17 +84,22 @@ And by using Postman:
 			"addressType": "HOME"
 		}
 	
-	-put http://localhost:8081/socio/4
+	-put http://localhost:8081/socio
 		{
-			"id": 4,
-			"username": "pbxxx",
+			"id": 7, <- note the id of the existing socio!
+			"username": "rsxxx",
 			"password": "secret",
-			"firstName": "Pierre",
-			"lastName": "Boulez",
-			"email": "boulez@gmail.com",
-			"active": true 
+			"firstName": "Richard",
+			"lastName": "Strauss",
+			"email": "strauss@gmail.com",
+			"active": true,
+			"socioLanguages": [
+                {"id": "2"},
+                {"id": "3"}
+			] 
 		} 
-		
+	etc.
+	
     -add an associated socio: post http://localhost:8081/associatedSocio/1/2    (/{socioId}/{associatedSocioId})
 	-change state: put http://localhost:8081/associatedSocio/1/2/true    (/{socioId}/{associatedSocioId}/{boolean})
 	-delete an associated socio: delete http://localhost:8081/associatedSocio/1/2    (/{socioId}/{associatedSocioId})
