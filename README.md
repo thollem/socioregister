@@ -67,8 +67,8 @@ And by using Postman:
 			"email": "strauss@gmail.com",
 			"active": true,
 			"socioLanguages": [
-						{"id": "2"},
-						{"id": "3"}
+				{"id": "2"},
+				{"id": "3"}
 			] 
 		} 
   
@@ -94,8 +94,8 @@ And by using Postman:
 			"email": "strauss@gmail.com",
 			"active": true,
 			"socioLanguages": [
-						{"id": "2"},
-						{"id": "3"}
+				{"id": "2"},
+				{"id": "3"}
 			] 
 		} 
 	etc.
