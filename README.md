@@ -44,3 +44,58 @@ The previous three applications (starter, mock, jpa) form the prelude for the fi
 Like I said before at this part I would like to elaborate on testing and DB initialization
 
 Testing has a mayor importance at Micro-Service and Springboot applications, so lets dive into it!
+
+
+
+
+The use-cases of socioregister are more extend since there are 8 tables present now:
+
+	-http://localhost:8081/socio
+
+	-http://localhost:8081/socio/2
+
+	-http://localhost:8081/socio/username/js
+
+And by using Postman:
+
+	-post http://localhost:8081/socio  
+		{
+			"username": "rs",
+			"password": "secret",
+			"firstName": "Richard",
+			"lastName": "Strauss",
+			"email": "strauss@gmail.com",
+			"active": true,
+			"socioLanguages": [
+                {"id": "2"},
+                {"id": "3"}
+			] 
+		} 
+  
+	-post http://localhost:8081/address
+		{ 
+			"street":"Bachstraat 24",
+			"city":"Haarlem",
+			"province":"Noord Holland",
+			"postalcode":"4365KL",
+			"description":"some comment",
+			"country": {"id": 5},
+			"socioId":3,
+			"addressType": "HOME"
+		}
+	
+	-put http://localhost:8081/socio/4
+		{
+			"id": 4,
+			"username": "pbxxx",
+			"password": "secret",
+			"firstName": "Pierre",
+			"lastName": "Boulez",
+			"email": "boulez@gmail.com",
+			"active": true 
+		} 
+		
+    -add an associated socio: post http://localhost:8081/associatedSocio/1/2    (/{socioId}/{associatedSocioId})
+	-change state: put http://localhost:8081/associatedSocio/1/2/true    (/{socioId}/{associatedSocioId}/{boolean})
+	-delete an associated socio: delete http://localhost:8081/associatedSocio/1/2    (/{socioId}/{associatedSocioId})
+	

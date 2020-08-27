@@ -36,7 +36,7 @@ public class AssociatedSocioServiceImpl implements AssociatedSocioService {
     @Override
     public void registerAssociatedSocio(Long socioId, Long associatedSocioId) {
         Optional<SocioModel> optSocio = socioRepò.findById(socioId);
-        Optional<SocioModel> optAssociatedSocio = socioRepò.findById(socioId);
+        Optional<SocioModel> optAssociatedSocio = socioRepò.findById(associatedSocioId);
         isPresent(optSocio, optAssociatedSocio, socioId, associatedSocioId);
 
         Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -48,7 +48,7 @@ public class AssociatedSocioServiceImpl implements AssociatedSocioService {
     @Override
     public void updateStateAssociatedSocio(Long socioId, Long associatedSocioId, boolean state) {
         Optional<SocioModel> optSocio = socioRepò.findById(socioId);
-        Optional<SocioModel> optAssociatedSocio = socioRepò.findById(socioId);
+        Optional<SocioModel> optAssociatedSocio = socioRepò.findById(associatedSocioId);
         isPresent(optSocio, optAssociatedSocio, socioId, associatedSocioId);
         
         AssociatedSocioState changedState;
@@ -66,7 +66,7 @@ public class AssociatedSocioServiceImpl implements AssociatedSocioService {
     @Override
     public void deleteStateAssociatedSocio(Long socioId, Long associatedSocioId) {
         Optional<SocioModel> optSocio = socioRepò.findById(socioId);
-        Optional<SocioModel> optAssociatedSocio = socioRepò.findById(socioId);
+        Optional<SocioModel> optAssociatedSocio = socioRepò.findById(associatedSocioId);
         isPresent(optSocio, optAssociatedSocio, socioId, associatedSocioId);
         associatedSocioRepo.deleteAssociatedSocio(socioId, associatedSocioId);
     }

@@ -13,7 +13,6 @@ import com.artsgard.socioregister.repository.SocioRepository;
 import com.artsgard.socioregister.service.SocioService;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -68,12 +67,15 @@ public class SocioServiceImpl implements SocioService {
             socios = socioRepo.getSociosBySortedPage(rows, offset);
         }
 
-        List<SocioDTO> socioList = new ArrayList();
-
-        socios.stream().map(sco -> mapperService.mapSocioModelToSocioDTO(sco)).forEachOrdered(scDTO -> {
-            socioList.add(scDTO);
-        });
-        return socioList;
+        if (socios.isEmpty()) {
+            List<SocioDTO> socioList = new ArrayList();
+            socios.stream().map(sco -> mapperService.mapSocioModelToSocioDTO(sco)).forEachOrdered(scDTO -> {
+                socioList.add(scDTO);
+            });
+            return socioList;
+        } else {
+            throw new ResourceNotFoundException("no Socios found!");
+        }
     }
 
     /**
@@ -87,7 +89,7 @@ public class SocioServiceImpl implements SocioService {
         if (opSocio.isPresent()) {
             return mapperService.mapSocioModelToSocioDTO(opSocio.get());
         } else {
-             throw new ResourceNotFoundException("no Addresses found!");
+            throw new ResourceNotFoundException("no socio found with id: " + id);
         }
     }
 
@@ -102,22 +104,7 @@ public class SocioServiceImpl implements SocioService {
         if (opSocio.isPresent()) {
             return mapperService.mapSocioModelToSocioDTO(opSocio.get());
         } else {
-             throw new ResourceNotFoundException("no Addresses found!");
-        }
-    }
-
-    /**
-     *
-     * @param username
-     * @return single socio as SocioMopdel
-     */
-    @Override
-    public SocioModel findSocioModelByUsername(String username) throws ResourceNotFoundException {
-        Optional<SocioModel> opSocio = socioRepo.findByUsername(username);
-        if (opSocio.isPresent()) {
-            return opSocio.get();
-        } else {
-             throw new ResourceNotFoundException("no Addresses found!");
+            throw new ResourceNotFoundException("no socio found with username: " + username);
         }
     }
 
@@ -144,14 +131,6 @@ public class SocioServiceImpl implements SocioService {
     public SocioDTO updateSocio(final SocioDTO socioDTO) throws ResourceNotFoundException {
 
         Optional<SocioModel> optSocio = socioRepo.findById(socioDTO.getId());
-                /*
-        for (SocioModel value : socioRepo.findAll()) {
-            if (Objects.equals(value.getId(), socioDTO.getId())) {
-                repoSocio = mapperService.mapSocioModelToSocioDTO(value);
-            }
-        }
-        */
-
         SocioDTO updatedDTO;
         if (optSocio.isPresent()) {
             SocioModel repoSocio = optSocio.get();
@@ -177,11 +156,11 @@ public class SocioServiceImpl implements SocioService {
             socioDTO.setRegisterDate(repoSocio.getRegisterDate());
             socioDTO.setLastCheckinDate(repoSocio.getLastCheckinDate());
             socioDTO.setSocioLanguages(repoSocio.getSocioLanguages());
-       //     socioDTO.setSocioAddresses(repoSocio.getSocioAddresses());
+            //     socioDTO.setSocioAddresses(repoSocio.getSocioAddresses());
             socioDTO.setId(socioDTO.getId());
 
         } else {
-             throw new ResourceNotFoundException("no Addresses found!");
+             throw new ResourceNotFoundException("no socio found with id: " + socioDTO.getId());
         }
         SocioModel socio = mapperService.mapSocioDTOToSocioModel(socioDTO);
         return mapperService.mapSocioModelToSocioDTO(socioRepo.save(socio));
@@ -196,12 +175,12 @@ public class SocioServiceImpl implements SocioService {
     @Override
     public void deleteSocioById(Long id) throws ResourceNotFoundException {
         Optional<SocioModel> opSocio = socioRepo.findById(id);
-        
-        if(opSocio.isPresent()) {
+
+        if (opSocio.isPresent()) {
             socioRepo.deleteById(id);
         } else {
-            throw new ResourceNotFoundException("no Addresses found!");
-        }  
+             throw new ResourceNotFoundException("no socio found with id: " + id);
+        }
     }
 
     /**

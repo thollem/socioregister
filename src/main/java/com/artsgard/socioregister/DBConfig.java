@@ -19,9 +19,9 @@ public class DBConfig {
     @Bean(name = "postgresDataSource")
     public DataSource devDatabaseConnection() {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-        //dataSourceBuilder.url("jdbc:postgresql://localhost:5432/socio_db");
-        dataSourceBuilder.url("jdbc:mysql://localhost:3306/socio_db?createDatabaseIfNotExist=true&useUnicode=yes&characterEncoding=UTF-8&useLegacyDatetimeCode=false&serverTimezone=UTC");
-        dataSourceBuilder.username("root");
+        dataSourceBuilder.url("jdbc:postgresql://localhost:5432/socio_db");
+        //dataSourceBuilder.url("jdbc:mysql://localhost:3306/socio_db?createDatabaseIfNotExist=true&useUnicode=yes&characterEncoding=UTF-8&useLegacyDatetimeCode=false&serverTimezone=UTC");
+        dataSourceBuilder.username("postgres");
         dataSourceBuilder.password("Candita123");
         return dataSourceBuilder.build();
     }

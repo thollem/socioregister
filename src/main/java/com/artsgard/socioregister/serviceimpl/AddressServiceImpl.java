@@ -10,7 +10,6 @@ import com.artsgard.socioregister.repository.AddressRepository;
 import com.artsgard.socioregister.repository.SocioRepository;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,7 +89,6 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressDTO updateAddress(AddressDTO addressDTO) throws ResourceNotFoundException {
-
         Optional<AddressModel> opAddress = addressRepository.findById(addressDTO.getId());
        
         if (opAddress.isPresent()) {

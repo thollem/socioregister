@@ -6,16 +6,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.artsgard.socioregister.DTO.SocioDTO;
-import com.artsgard.socioregister.exception.UniqueConstraintException;
 import com.artsgard.socioregister.model.AddressModel;
-import com.artsgard.socioregister.model.LanguageModel;
 import com.artsgard.socioregister.model.SocioModel;
 import com.artsgard.socioregister.repository.SocioRepository;
-import com.artsgard.socioregister.service.SocioService;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import org.modelmapper.PropertyMap;
 import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.LoggerFactory;
 
@@ -75,7 +70,7 @@ public class MapperServiceImpl implements MapperService {
     }
 
     @Override
-    public AddressModel mapAddressDTOToAddressModel(AddressDTO dto) throws UniqueConstraintException {
+    public AddressModel mapAddressDTOToAddressModel(AddressDTO dto) {
         if (dto != null) {
             SocioModel socio = socioRepository.getOne(dto.getSocioId());
             AddressModel addr = modelMapper.map(dto, AddressModel.class);
