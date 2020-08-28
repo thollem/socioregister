@@ -30,8 +30,7 @@ INSERT INTO socio_language (socio_id, language_id) VALUES ('3','4');
 INSERT INTO address (street, city, postalcode, province, country_id, description, address_type, socio_id) 
 VALUES ('Edmondstraat 36','Heerlen', '5467CZ', 'Limburg', (SELECT id FROM country WHERE code='NL'), 'some story', 'HOME', 1);
 INSERT INTO address (street, city, postalcode, province, country_id, description, address_type, socio_id) 
-VALUES ('ZuidWest 36','Amsterdam', '53454CZ', 'Zuid Holland', (SELECT id FROM country WHERE code='NL'), 'some otherstory', 'HOME', 1);
+VALUES ('ZuidWest 36','Amsterdam', '53454CZ', 'Zuid Holland', (SELECT id FROM country WHERE code='NL'), 'some other story', 'HOME', 1);
 
 INSERT INTO socio_associated_socio (socio_id, associated_socio_id) VALUES ('1','2');
 INSERT INTO socio_associated_socio (socio_id, associated_socio_id) VALUES ('1','3');
-INSERT INTO socio_associated_socio (socio_id, associated_socio_id) VALUES ('2','3');

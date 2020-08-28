@@ -45,8 +45,12 @@ Like I said before at this part I would like to elaborate on testing and DB init
 
 Testing has a mayor importance at Micro-Service and Springboot applications, so lets dive into it!
 
+But first note a new feature called Spring Profiles present at the resources folder and the DBConfig class at the root. The property spring.profiles.active=dev, which sets the different profiles, you will find at application.properties. There are three profile-options present: test, dev, and pro. Each option points at a different DB. You may simply change the spring.profiles.active= into test, dev, or prod and see for yourself the results. To see it work correctly you first have to install and initialize each single db (H2, Postgres and MySQL).
 
 
+DB Initialization
+
+Db initialization is a tricky thing but an importanty feature when changing to different environments. Next read what I know about it very much by trail and error.
 
 The use-cases of socioregister are more extend since there are 8 tables present now:
 
@@ -84,7 +88,7 @@ And by using Postman:
 			"addressType": "HOME"
 		}
 	
-	-put http://localhost:8081/socio
+	-put http://localhost:8081/socio  <- no path variable here!
 		{
 			"id": 7, <- note the id of the existing socio!
 			"username": "rsxxx",
@@ -98,7 +102,7 @@ And by using Postman:
 				{"id": "3"}
 			] 
 		} 
-	etc.
+	Note pls that different from the two previous applications (mock and jpa) here there is no @PathVariable (/{id}) needed when updating. Though incase of an update the id field has to be present at the json object as in the above example!
 	
     -add an associated socio: post http://localhost:8081/associatedSocio/1/2    (/{socioId}/{associatedSocioId})
 	-change state: put http://localhost:8081/associatedSocio/1/2/true    (/{socioId}/{associatedSocioId}/{boolean})

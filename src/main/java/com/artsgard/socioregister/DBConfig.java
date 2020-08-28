@@ -40,8 +40,9 @@ public class DBConfig {
     @Bean
     public DataSource prodDatabaseConnection() {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.url("jdbc:postgresql://localhost:5432/socio_db");
-        dataSourceBuilder.username("postgres");
+        dataSourceBuilder.url("jdbc:mysql://localhost:3306/socio_db?createDatabaseIfNotExist=true&useUnicode=yes&characterEncoding=UTF-8&useLegacyDatetimeCode=false&serverTimezone=UTC");
+        //dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver");
+        dataSourceBuilder.username("root");
         dataSourceBuilder.password("Candita123");
         return dataSourceBuilder.build();
     }
