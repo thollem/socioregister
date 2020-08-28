@@ -41,28 +41,28 @@ The previous three applications (starter, mock, jpa) form the prelude for the fi
 	
 	3) SocioRegister-jpa adds the Spring-data layer in the form of JPA-persistence (Postgres DB). It further goes into the implementation of validation messages. And finally one finds an implementaion of a Spring Global Exception Handeling (amung others the ResourceNotFoundException) based on the @RestControllerAdvice and the ResponseEntityExceptionHandler.
 
-Like I said before at this part I would like to elaborate on testing and DB initialization
+Like I said before at this part I would like to elaborate on testing and DB initialization.
 
-Testing has a mayor importance at Micro-Service and Springboot applications, so lets dive into it!
+Testing is key at Micro-Service and Springboot applications, so lets dive into it!
 
 But first note a new feature called Spring Profiles present at the resources folder and the DBConfig class at the root. The property spring.profiles.active=dev, which sets the different profiles, you will find at application.properties. There are three profile-options present: test, dev, and pro. Each option points at a different DB. You may simply change the spring.profiles.active= into test, dev, or prod and see for yourself the results. To see it work correctly you first have to install and initialize each single db (H2, Postgres and MySQL).
 
 
 DB Initialization
 
-Db initialization is a tricky thing but an importanty feature when changing frequently to different environments. Next read what I know about it which a learned very much by trail and error:
+Db initialization is a tricky thing but an importanty feature when changing frequently to different environments. Next read what I know about it which I learned very much by trail and error:
 
-	1) each different DB-type, H2, Postgres etc, have their own query dialects. At the src/main/resources you`ll find schemas of MySQL.
+	1) each different DB-type, H2, Postgres etc, has their own query dialects. At the src/main/resources you`ll find a schema of MySQL.
 	
 	2) See to it that all model/ entity classes have the correct hibernate/jpa annotations concerning each table and their relations: very important!
 	
-	3) Write the insert-data into a data.sql file at src/main/resources, using the correct query langauge for each dialect;
+	3) Write the insert-data into a data.sql file at src/main/resources, using the correct query langauge for each dialect (Springboot auto-config will pick that file);
 	
-	4) Use the following properties for initialization (see application(-prod/dev/test).properties or ): 
+	4) Use the following properties for initialization (see application(-prod/dev/test).properties): 
 		-spring.jpa.hibernate.ddl-auto=create   / none
 		-spring.datasource.initialization-mode=always   / never
 		-spring.datasource.initialize=true   / false
-	The first option create/always/true I use only at the first time. I noted that these props work best with H2 and Postgres. (There is also the issue of declaring the DB as Schema or Catalog at each Model/ Entity which MySQL likes most.....)
+	The first option create/always/true I use only at the first time starting the app when there is no DB present (of course after installing the servers for each DB-type). I noted that these props work best with H2 and Postgres. (There is also the issue of declaring the DB as Schema or Catalog at each Model/ Entity Java class, which MySQL likes most.....)
 	
 At Last But Not at Least Testing
 	
