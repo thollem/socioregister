@@ -1,5 +1,5 @@
-# socioregister
-A Springboot REST application to register and add Socios
+# 4) socioregister
+A Springboot REST application to register and add Socios, the final/ full Springboot REST-application
 
 1) General Info About the Socio-Micro-Service-Demo
 
