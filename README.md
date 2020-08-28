@@ -50,7 +50,24 @@ But first note a new feature called Spring Profiles present at the resources fol
 
 DB Initialization
 
-Db initialization is a tricky thing but an importanty feature when changing to different environments. Next read what I know about it very much by trail and error.
+Db initialization is a tricky thing but an importanty feature when changing frequently to different environments. Next read what I know about it which a learned very much by trail and error:
+
+	1) each different DB-type, H2, Postgres etc, have their own query dialects. At the src/main/resources you`ll find schemas of MySQL.
+	
+	2) See to it that all model/ entity classes have the correct hibernate/jpa annotations concerning each table and their relations: very important!
+	
+	3) Write the insert-data into a data.sql file at src/main/resources, using the correct query langauge for each dialect;
+	
+	4) Use the following properties for initialization (see application(-prod/dev/test).properties or ): 
+		-spring.jpa.hibernate.ddl-auto=create   / none
+		-spring.datasource.initialization-mode=always   / never
+		-spring.datasource.initialize=true   / false
+	The first option create/always/true I use only at the first time. I noted that these props work best with H2 and Postgres. (There is also the issue of declaring the DB as Schema or Catalog at each Model/ Entity which MySQL likes most.....)
+	
+At Last But Not at Least Testing
+	
+To be continued
+
 
 The use-cases of socioregister are more extend since there are 8 tables present now:
 
@@ -102,9 +119,9 @@ And by using Postman:
 				{"id": "3"}
 			] 
 		} 
-	Note pls that different from the two previous applications (mock and jpa) here there is no @PathVariable (/{id}) needed when updating. Though incase of an update the id field has to be present at the json object as in the above example!
+	Note pls that different from the two previous applications (mock and jpa) here one finds no @PathVariable (/{id}) at the url. Incase of an update the id field has to be present at the json object as shown in the above example!
 	
     -add an associated socio: post http://localhost:8081/associatedSocio/1/2    (/{socioId}/{associatedSocioId})
-	-change state: put http://localhost:8081/associatedSocio/1/2/true    (/{socioId}/{associatedSocioId}/{boolean})
+	-change state: put http://localhost:8081/associatedSocio/1/2/true    (/{socioId}/{associatedSocioId}/{boolean} for ACCEPTED/ DENIED)
 	-delete an associated socio: delete http://localhost:8081/associatedSocio/1/2    (/{socioId}/{associatedSocioId})
 	
