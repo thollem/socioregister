@@ -89,7 +89,7 @@ TestRestTemplate is very similar to the RestTemplate it starts a real server for
 
 3) @DataJpaTest
 
-A class annotated with DataJpaTest invokes a fully functional JPA persistence context to be executed for a H2 internal db. The next two annotations are the setup of this test environment: @TestPropertySource({"classpath:application-test.properties”}), @DataJpaTest. As a matter of exercise I have tested all service method's, which none business logic, db transactions. Normally one would not test the standard implemented JPA methods such as findById, but only the ones that run on native-queries done by the developer, right!
+A class annotated with DataJpaTest invokes a fully functional JPA persistence context to be executed for a H2 internal db. The next two annotations are the setup of this test environment: @TestPropertySource({"classpath:application-test.properties”}), @DataJpaTest. As a matter of exercise I have tested all service method's, which have no business logic, db transactions. Normally one would not test the standard implemented JPA methods such as findById, but only the ones that run on native-queries done by the developer, right!
 
 Test Class Mocks and Injected Dependencies
 
