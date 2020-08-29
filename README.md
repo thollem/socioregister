@@ -66,35 +66,38 @@ Db initialization is a tricky thing but an importanty feature when changing freq
 	
 Spring Testing
 
-Spring is many things, but principally it is dependency injection of classes/ beans into other classes. Key to dependency injection is the Spring Application Context, a namespace/ file-tree where spring scans for @Component, @Service, @Repository annotated classes, to be injected (@Autowired) into other classes which depend on them. 
+Spring is many things, but principally it is dependency injection of classes/ beans into other classes. Key to dependency injection is the Spring Application Context, a namespace/ file-tree where Spring scans for @Component, @Service, @Repository annotated classes, to be injected (@Autowired) into other classes. 
 
-All this is NOT available at the Test-directory, so what to do? Either we need to mock all these dependencies needed, or we have to invoke a complete or partial Spring Context. First we add the Mockito5 spring-boot-starter-test to the pom (the exclude  tag results in excluding Mockito4) There are three strategies concerning Spring Testing focused on a Spring-REST-app:
+All this is NOT available at the Test-directory, so what to do? Either we need to mock all these dependencies needed, or we have to invoke a complete or partial Spring Context. But first we add the Mockito5 spring-boot-starter-test to the pom (the exclude  tag results in excluding Mockito4) There are three strategies concerning Spring Testing focused on a Spring-REST-app:
 
-MockMvc
+1) MockMvc
 
 One may instantiate it when using the @ExtendWith(MockitoExtension.class) annotation at a controller class (non Spring approach) in two ways:
+	
 	1) MockMvc mockMvcPartial = MockMvcBuilders.standaloneSetup(socioController).build();
 	2) MockMvc mockMvcComplete =  MockMvcBuilders.webAppContextSetup(webApplicationContext).build(); 
 
-To invoke a partial context (stand alone) in Spring one adds the following annotations to the controller class @ExtendWith(SpringExtension.class), @AutoConfigureJsonTesters, @WebMvcTest(SocioController.class) and next, one injects the MockMvc by @Autowired.
-To invoke a complete context use the following two annotations: @ExtendWith(SpringExtension.class) @SpringBootTest
-All these approaches have in common that they do not start a real server! Starting a complete context is very time consuming!
+To invoke a partial context (stand alone) in Spring, one adds the following annotations to the controller class: @ExtendWith(SpringExtension.class), @AutoConfigureJsonTesters, @WebMvcTest(SocioController.class) and next, one injects the MockMvc by the @Autowired annotation.
 
-TestRestTemplate
+To invoke a complete context use the following two annotations: @ExtendWith(SpringExtension.class) @SpringBootTest.
 
-TestRestTemplate is very similar to the RestTemplate and starts a real server for testing (private TestRestTemplate restTemplate;). Together with the following three annotations: @ExtendWith(SpringExtension.class), @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT), @AutoConfigureJsonTesters the test methods are able to use the previous explained ResponseEntity.
+All these approaches have in common that they do not start a real server! Note: starting a complete context is very time consuming!
 
-@DataJpaTest
+2) TestRestTemplate
 
-A class annotated with DataJpaTest invokes a fully functional JPA persistence context to be executed by a H2 internal db. The next annotations are the setup of this test environment: @TestPropertySource({"classpath:application-test.properties”}), @DataJpaTest. The test methods speak for themselves.
+TestRestTemplate is very similar to the RestTemplate it starts a real server for testing (private TestRestTemplate restTemplate;). Together with the following three annotations: @ExtendWith(SpringExtension.class), @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT), @AutoConfigureJsonTesters the test methods are able to use the powerfull, previous explained ResponseEntity.
+
+3) @DataJpaTest
+
+A class annotated with DataJpaTest invokes a fully functional JPA persistence context to be executed for a H2 internal db. The next two annotations are the setup of this test environment: @TestPropertySource({"classpath:application-test.properties”}), @DataJpaTest. The test methods speak for themselves.
 
 Test Class Mocks and Injected Dependencies
 
-The class under tested should be mocked by using the @InjectMocks annotation. The services and repositories mocks should be annotated with @MockBean and within a non-Spring Mockito context (@ExtendWith(MockitoExtension.class)) with  @Mock. The JacksonTester, which handles the json-objects conversion, should be instantiated outside Spring. In Spring  the class can be injected by auto wiring.
+The class under tested should be mocked by using the @InjectMocks annotation. The services and repositories mocks should be annotated with @MockBean and within a non-Spring Mockito context (@ExtendWith(MockitoExtension.class)) with  @Mock. The JacksonTester, which handles the json-objects conversion, should be instantiated outside Spring. In Spring  the class can be injected by @Autowired.
 
 About the Test Methods in General
 
-Before any test method you declare a method called setup() annotated with @BeforeEach to prepare things before each test. A test method is a test method when annoyed with @Test. The code uses BDDMockito (Behavior Driven Development) and AssertJ using the general structure of given -> when -> than resulting in easy readable test. 
+Before any test method you declare a method called setup() annotated with @BeforeEach to prepare things before each test. A test method is a test method when annotated with @Test. The code uses BDDMockito (Behavior Driven Development) and AssertJ with the general structure of: given -> when -> than resulting in easy readable test. 
 
 
 The use-cases of socioregister are more extend since there are 8 tables present now:
