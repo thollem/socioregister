@@ -65,6 +65,7 @@ Db initialization is a tricky thing but an importanty feature when changing freq
 	The first option create/always/true I use only at the first time starting the app when there is no DB present (of course after installing the servers for each DB-type). I noted that these props work best with H2 and Postgres. (There is also the issue of declaring the DB as Schema or Catalog at each Model/ Entity Java class, which MySQL likes most.....)
 	
 Spring Testing
+
 Spring is many things, but principally it is dependency injection of classes/ beans into other classes. Key to dependency injection is the Spring Application Context, a namespace/ file-tree where spring scans for @Component, @Service, @Repository annotated classes, to be injected (@Autowired) into other classes which depend on them. 
 
 All this is NOT available at the Test-directory, so what to do? Either we need to mock all these dependencies needed, or we have to invoke a complete or partial Spring Context. First we add the Mockito5 spring-boot-starter-test to the pom (the exclude  tag results in excluding Mockito4) There are three strategies concerning Spring Testing focused on a Spring-REST-app:
@@ -80,15 +81,19 @@ To invoke a complete context use the following two annotations: @ExtendWith(Spri
 All these approaches have in common that they do not start a real server! Starting a complete context is very time consuming!
 
 TestRestTemplate
+
 TestRestTemplate is very similar to the RestTemplate and starts a real server for testing (private TestRestTemplate restTemplate;). Together with the following three annotations: @ExtendWith(SpringExtension.class), @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT), @AutoConfigureJsonTesters the test methods are able to use the previous explained ResponseEntity.
 
 @DataJpaTest
+
 A class annotated with DataJpaTest invokes a fully functional JPA persistence context to be executed by a H2 internal db. The next annotations are the setup of this test environment: @TestPropertySource({"classpath:application-test.properties”}), @DataJpaTest. The test methods speak for themselves.
 
 Test Class Mocks and Injected Dependencies
+
 The class under tested should be mocked by using the @InjectMocks annotation. The services and repositories mocks should be annotated with @MockBean and within a non-Spring Mockito context (@ExtendWith(MockitoExtension.class)) with  @Mock. The JacksonTester, which handles the json-objects conversion, should be instantiated outside Spring. In Spring  the class can be injected by auto wiring.
 
 About the Test Methods in General
+
 Before any test method you declare a method called setup() annotated with @BeforeEach to prepare things before each test. A test method is a test method when annoyed with @Test. The code uses BDDMockito (Behavior Driven Development) and AssertJ using the general structure of given -> when -> than resulting in easy readable test. 
 
 
