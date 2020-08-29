@@ -109,6 +109,18 @@ The use-cases of socioregister are more extend since there are 8 tables present 
 	-http://localhost:8081/socio/2
 
 	-http://localhost:8081/socio/username/js
+	
+	-http://localhost:8081/address
+	
+	-http://localhost:8081/address/2
+	
+	-http://localhost:8081/address/socioId/2
+	
+	-http://localhost:8081/country
+	
+	-http://localhost:8081/language
+	
+	-http://localhost:8081/role
 
 And by using Postman:
 
