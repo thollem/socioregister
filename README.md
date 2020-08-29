@@ -100,6 +100,8 @@ About the Test Methods in General
 Before any test method you declare a method called setup() annotated with @BeforeEach to prepare things before each test. A test method is a test method when annotated with @Test. The code uses BDDMockito (Behavior Driven Development) and AssertJ with the general structure of: given -> when -> than resulting in easy readable test. 
 
 
+Use-cases
+
 The use-cases of socioregister are more extend since there are 8 tables present now:
 
 	-http://localhost:8081/socio
