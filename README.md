@@ -7,7 +7,7 @@ A Springboot REST application to register and add Socios, the final/ full Spring
 
 
 
-General Info =====================================
+## General Info ====
 
 The Socio Micro Services Project will consist of about 10 small (backend) Springboot applications, deployed in a Docker Container/ Linux Oracle Virtual Box. SocioRegister is the principal part of a series of four applications called: starter, mock, jpa, socioregister. Together they show a stepwise buildup to a Springboot REST application, which contains use-cases for registering and adding Socios (similar to Facebook). This line of applications goes from an almost empty Springboot shell (starter: one controller method only) to a small but full-fledged REST application: SocioRegister which will be used as a component of our micro-services.
 
@@ -31,7 +31,7 @@ Testing is still "work in progress"
 
 
 
-Specific Info SocioRegister =====================================
+## Specific Info SocioRegister ====
 
 The previous three applications (starter, mock, jpa) form the prelude for the final SocioRegister application to be deployed at a Docker Container. Maybe it is a good idea to start first with a small recap?
 
@@ -48,7 +48,7 @@ Testing is key at Micro-Service and Springboot applications, so lets dive into i
 But first note a new feature called Spring Profiles present at the resources folder and the DBConfig class at the root. The property spring.profiles.active=dev, which sets the different profiles, you will find at application.properties. There are three profile-options present: test, dev, and pro. Each option points at a different DB. You may simply change the spring.profiles.active= into test, dev, or prod and see for yourself the results. To see it work correctly you first have to install and initialize each single db (H2, Postgres and MySQL).
 
 
-DB Initialization
+### DB Initialization
 
 Db initialization is a tricky thing but an importanty feature when changing frequently to different environments. Next read what I know about it which I learned very much by trail and error:
 
@@ -64,7 +64,7 @@ Db initialization is a tricky thing but an importanty feature when changing freq
 		-spring.datasource.initialize=true   / false
 	The first option create/always/true I use only at the first time starting the app when there is no DB present (of course after installing the servers for each DB-type). I noted that these props work best with H2 and Postgres. (There is also the issue of declaring the DB as Schema or Catalog at each Model/ Entity Java class, which MySQL likes most.....)
 	
-Spring Testing
+### Spring Testing
 
 Spring is many things, but principally it is dependency injection of classes/ beans into other classes. Key to dependency injection is the Spring Application Context, a namespace/ file-tree where Spring scans for @Component, @Service, @Repository annotated classes, to be injected (@Autowired) into other classes. 
 
@@ -100,7 +100,7 @@ About the Test Methods in General
 Before any test method you declare a method called setup() annotated with @BeforeEach to prepare things before each test. A test method is a test method when annotated with @Test. The code uses BDDMockito (Behavior Driven Development) and AssertJ with the general structure of: given -> when -> than resulting in easy readable test. 
 
 
-Use-cases
+### Use-cases
 
 The use-cases of socioregister are more extend since there are 8 tables present now:
 
