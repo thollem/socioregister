@@ -70,7 +70,7 @@ Spring is many things, but principally it is dependency injection of classes/ be
 
 All this is NOT available at the Test-directory, so what to do? Either we need to mock all these dependencies needed, or we have to invoke a complete or partial Spring Context. But first we add the Mockito5 spring-boot-starter-test to the pom (the exclude  tag results in excluding Mockito4) There are three strategies concerning Spring Testing focused on a Spring-REST-app:
 
-1) MockMvc
+#### 1) MockMvc
 
 One may instantiate it when using the @ExtendWith(MockitoExtension.class) annotation at a controller class (non Spring approach) in two ways:
 	
@@ -83,11 +83,11 @@ To invoke a complete context use the following two annotations: @ExtendWith(Spri
 
 All these approaches have in common that they do not start a real server! Note: starting a complete context is very time consuming!
 
-2) TestRestTemplate
+#### 2) TestRestTemplate
 
 TestRestTemplate is very similar to the RestTemplate it starts a real server for testing (private TestRestTemplate restTemplate;). Together with the following three annotations: @ExtendWith(SpringExtension.class), @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT), @AutoConfigureJsonTesters the test methods are able to use the powerfull, previous explained ResponseEntity.
 
-3) @DataJpaTest
+#### 3) @DataJpaTest
 
 A class annotated with DataJpaTest invokes a fully functional JPA persistence context to be executed for a H2 internal db. The next two annotations are the setup of this test environment: @TestPropertySource({"classpath:application-test.properties”}), @DataJpaTest. As a matter of exercise I have tested all service method's, which have no business logic, db transactions. Normally one would not test the standard implemented JPA methods such as findById, but only the ones that run on native-queries done by the developer, right!
 
