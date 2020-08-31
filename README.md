@@ -43,7 +43,7 @@ The previous three applications (starter, mock, jpa) form the prelude for the fi
 
 Like I said before at this part I would like to elaborate on testing and DB initialization.
 
-Testing is key at Micro-Service and Springboot applications, so lets dive into it!
+### Spring Profiles
 
 But first note a new feature called Spring Profiles present at the resources folder and the DBConfig class at the root. The property spring.profiles.active=dev, which sets the different profiles, you will find at application.properties. There are three profile-options present: test, dev, and pro. Each option points at a different DB. You may simply change the spring.profiles.active= into test, dev, or prod and see for yourself the results. To see it work correctly you first have to install and initialize each single db (H2, Postgres and MySQL).
 
