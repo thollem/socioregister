@@ -97,7 +97,7 @@ The class under tested should be mocked by using the @InjectMocks annotation. Th
 
 About the Test Methods in General
 
-Before any test method you declare a method called setup() annotated with @BeforeEach to prepare things before each test. A test method is a test method when annotated with @Test. The code uses BDDMockito (Behavior Driven Development) and AssertJ with the general structure of: given -> when -> than resulting in easy readable test. 
+Before any test method you declare a method called setup() annotated with @BeforeEach to prepare things before each test. A test method is a test method when annotated with @Test. The code uses BDDMockito (Behavior Driven Development) and AssertJ with the general structure of: given -> when -> then resulting in easy readable test. 
 
 
 ### Use-cases
