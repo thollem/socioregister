@@ -22,6 +22,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.BDDMockito.given;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 
 /**
  *
@@ -39,7 +40,6 @@ public class MapperServiceTest {
     @Mock
     private SocioRepository socioRepository;
 
-   
     MapperService mapperService = new MapperServiceImpl();
 
     @BeforeEach
@@ -75,17 +75,21 @@ public class MapperServiceTest {
         assertEquals(model.getEmail(), socioModelMock.getEmail());
     }
     
-    //@Test
+    @Test
     public void mapAddressDTOToAddressModelTest() {
         assertNotNull(addressDTOMock);
-        assertNotNull(socioRepository);
         
-        given(socioRepository.getOne(addressDTOMock.getSocioId())).willReturn(socioModelMock);
+        ModelMapper modelMapper = new ModelMapper();
+        AddressModel addr = modelMapper.map(addressDTOMock, AddressModel.class);
+        addr.setSocio(socioModelMock);
         
-        AddressModel model = mapperService.mapAddressDTOToAddressModel(addressDTOMock);
-        model.setSocio(socioModelMock);
-        assertThat(model, isA(AddressModel.class));
-        assertEquals(model.getPostalcode(), addressDTOMock.getPostalcode());
+        assertThat(addr, isA(AddressModel.class));
+        assertEquals(addr.getCountry(), addressModelMock.getCountry());
+        assertEquals(addr.getCity(), addressModelMock.getCity());
+        assertEquals(addr.getStreet(), addressModelMock.getStreet());
+        assertEquals(addr.getPostalcode(), addressModelMock.getPostalcode());
+        assertEquals(addr.getAddressType(), addressModelMock.getAddressType());
+        assertEquals(addr.getSocio(), addressModelMock.getSocio());      
     }
     
     @Test
