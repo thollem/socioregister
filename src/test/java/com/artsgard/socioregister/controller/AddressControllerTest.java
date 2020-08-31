@@ -4,6 +4,7 @@ import com.artsgard.socioregister.controller.AddressController;
 import com.artsgard.socioregister.DTO.AddressDTO;
 import com.artsgard.socioregister.DTO.SocioDTO;
 import com.artsgard.socioregister.mock.SocioMock;
+import com.artsgard.socioregister.model.AddressModel;
 import com.artsgard.socioregister.model.AddressModel.AddressType;
 import com.artsgard.socioregister.model.CountryModel;
 import com.artsgard.socioregister.service.MapperService;
@@ -77,7 +78,6 @@ public class AddressControllerTest {
     
     @Test
     public void testFindAllAddresses() throws Exception {
-
         given(addressService.findAllAddresses()).willReturn(addresses);
 
         MockHttpServletResponse response = mockMvc
